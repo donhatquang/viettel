@@ -185,51 +185,38 @@ class Soqi extends Source
                     if (count($item)>1) {
                         
                         list(, $value) = $item;
-                        $contact[$key] = trim($value);
                     }
                     // add value
-                    $company->{$col[$key]}($contact[$key]);
+                    $company->{$col[$key]}(trim($value));
                 }
-// 
-                
-                //var_dump($contact);
-                /*list contact*/
-                
-                foreach ($contact as $key => $contact_value) {
-                    # code...
-                
-                }
-  
+
                 /*LAW*/
                 $law = explode("&nbsp;", $law->plaintext);
+                $law = array_filter($law); //remove empty element
 
-
-                $law = array_filter($law);
-
+                //d($law);
+                $col = ['setMoney','setLawperson'];
+                $count = 0;
+                //var_dump($law);
                 foreach ($law as $key => $value) {
 
-                    $item = explode(":", $value);
+                    list(,$value) = explode("：", $value);
                     
-                    if (count($item)>1) {
+                    /*if (count($item)>1) {
 
                        list(, $value) = $item;
                        $law[$key] = trim($value);
-                    }
+                    }*/
+                    // add value
 
-                    //d($value);
-                    
+                    $company->{$col[$count]}(trim($value));
+                    $count++;
                 }
-                //  d($law);
-                list($money, , , $lawperson) = $law;
 
-                $company->setMoney($money);
-                $company->setLawperson($lawperson);
 
                 /*EXPORT DATA*/
                 // convert from object to array
                 $data[] = $company->jsonSerialize();
-                //var_dump($item);
-                //$text .= $item;
 
             }
 
