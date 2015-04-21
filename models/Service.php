@@ -4,11 +4,14 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
-use yii\base\Object;
+//use yii\base\Object;
 
 // example of how to use viettel selector to retrieve HTML contents
 include('simplehtmldom_1_5/simple_html_dom.php');
+
+/*SOQI*/
 include('company/Soqi.php');
+include('company/SoqiImpl.php');
 
 /**
  * ContactForm is the model behind the contact form.
@@ -77,14 +80,15 @@ class Service extends Model
         if ($source && is_array($this->source[$source])) {
 
             $url = $this->source[$source]["url"];
-            $sourceParam = $this->source[$source]["param"];
+            //$sourceParam = $this->source[$source]["param"];
 
             switch ($source) {
 
                 case "soqi":
                     $company = new Soqi();
                     $company->setUrl($url);
-                    $company->setCity($sourceParam["city"]);
+                    $company->setCity($param["city"]);
+                    $company->setCityName($param['cityName']);
 
                     /*KEYWORD*/
                     //d($param);
@@ -102,8 +106,14 @@ class Service extends Model
 
             $url = $company->url($company);
             $html = file_get_html($url);
-            $data = $company->format($html);
 
+            /*
+             *  $data = array(
+            "company" => $companylist,
+            "city" => $city
+             * */
+
+            $data = $company->format($html);
         }
 
         // d($data);

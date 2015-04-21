@@ -15,6 +15,7 @@ abstract class Source {
 
     abstract public function url($param);
     abstract public function format($html);
+    abstract public function cityFormat($html);
 
     /**
      * @return mixed

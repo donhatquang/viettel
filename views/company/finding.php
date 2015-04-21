@@ -3,6 +3,13 @@
 //exit();
 use yii\helpers\Html;
 
+$city = $data["city"];
+$data = $data["company"];
+
+
+//var_dump($data);
+//exit();
+
 $col = array_keys($data[0]);
 $nodisplay = ["url"];
 
@@ -10,12 +17,17 @@ $nodisplay = ["url"];
 //exit();
 
 $current = $param["page"];
-var_dump($current);
+//var_dump($current);
 
 //json_encode
 //d($col);
 //d($param);
 ?>
+
+<?php
+require ("plugin/city.php");
+?>
+
 
 <!--INPUT-->
 <form class="form-inline" method="get" action="">

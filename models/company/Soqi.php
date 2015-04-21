@@ -8,99 +8,7 @@
 
 namespace app\models;
 include("Source.php");
-include("Company.php");
-
-class SoqiImpl extends Company
-{
-
-    /**
-     * @param mixed $contactperson
-     */
-    public function setContactperson($contactperson)
-    {
-        $this->contactperson = $contactperson;
-    }
-
-    /**
-     * @param mixed $title
-     */
-    public function setTitle($item)
-    {
-        list($data) = $item->find("h3 a");
-
-        $this->setUrl($data->href);
-        $this->title = $data->plaintext;
-    }
-
-    /**
-     * @param mixed $desc
-     */
-    public function setDesc($desc)
-    {
-        list(, $desc) = explode(":", $desc->plaintext);
-        $this->desc = $desc;
-    }
-
-    /**
-     * @param mixed $address
-     */
-    public function setAddress($address)
-    {
-        $address = $address->plaintext;
-        list(, $address) = explode(":", $address);
-
-        $this->address = $address;
-    }
-
-    /**
-     * @param mixed $money
-     */
-    public function setMoney($money)
-    {
-        $this->money = $money;
-    }
-
-    /**
-     * @param mixed $tel
-     */
-    public function setTel($tel)
-    {
-        $this->tel = $tel;
-    }
-
-    /**
-     * @param mixed $mobile
-     */
-    public function setMobile($mobile)
-    {
-        $this->mobile = $mobile;
-    }
-
-    /**
-     * @param mixed $fax
-     */
-    public function setFax($fax)
-    {
-        $this->fax = $fax;
-    }
-
-    /**
-     * @param mixed $lawperson
-     */
-    public function setLawperson($lawperson)
-    {
-        $this->lawperson = $lawperson;
-    }
-
-    /**
-     * @param mixed $url
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-    }
-
-}
+include("SoqiCity.php");
 
 class Soqi extends Source
 {
@@ -110,6 +18,117 @@ class Soqi extends Source
     public $cityName;
     public $keywords;
     public $page;
+
+    /*URL*/
+    public function url($self)
+    {
+
+        $param = http_build_query($self);
+
+        return $this->getUrl() . "/search?" . $param;
+    }
+
+    /*SOQI CITY SOLUTION*/
+    public function cityFormat($html) {
+
+        $cities = [];
+        //d(count($html->find("a")));
+        /*LIST ALL CITY DISPLAY*/
+        foreach ($html->find("a") as $item) {
+
+            $cityName = $item->plaintext;
+            $cityCode = $item->href;
+
+            $city = new SoqiCity($cityName, $cityCode);
+            $cities[] = $city;
+        }
+
+        return $cities;
+    }
+
+    /*SOQI FORMAT*/
+    public function format($html)
+    {
+
+        $data = null;
+
+        /*City list*/
+        //d(count($html->find(".address_l")));
+        $address = $html->find(".address_l")[0];
+        $city = $this->cityFormat($address);
+
+        /*Company list*/
+        $companylist = [];
+
+        foreach ($html->find(".itemblocks") as $item) {
+
+            /*IMPLEMENT SOQI WEB*/
+            $company = new SoqiImpl();
+            $company->setTitle($item);
+
+            if (count($item->find("p")) >= 4) {
+
+                list($desc, $contact, $address, $law) = $item->find("p");
+
+                $company->setDesc($desc);
+                $company->setAddress($address);
+
+                /*CONTACT*/
+                $col = ['setContactperson','setTel','setMobile','setFax'];
+                $contact = explode("&nbsp", $contact->plaintext);
+                
+                foreach ($contact as $key => $value) {
+
+                    $item = explode(":", $value);
+                    
+                    if (count($item)>1) {
+                        list(, $value) = $item;
+                    }
+                    // add value
+                    $company->{$col[$key]}(trim($value));
+                }
+
+                /*LAW*/
+                $law = explode("&nbsp;", $law->plaintext);
+                $law = array_filter($law); //remove empty element
+
+
+                $col = ['setMoney','setLawperson'];
+                $count = 0;
+                //var_dump($law);
+                foreach ($law as $key => $value) {
+
+                    list(,$value) = explode("：", $value);
+                    
+                    /*if (count($item)>1) {
+
+                       list(, $value) = $item;
+                       $law[$key] = trim($value);
+                    }*/
+                    // add value
+
+                    $company->{$col[$count]}(trim($value));
+                    $count++;
+                }
+
+                // convert from object to array
+                $companylist[] = $company->jsonSerialize();
+
+                /*ADD COMPANY OBJECT TO LIST*/
+                //$companylist[] = $company;
+            }
+        }
+        //END LIST
+
+        /*EXPORT DATA*/
+        $data = array(
+
+            "company" => $companylist,
+            "city" => $city
+        );
+
+        return $data;
+    }
 
     /**
      * @return mixed
@@ -141,89 +160,6 @@ class Soqi extends Source
     public function setKeywords($keywords)
     {
         $this->keywords = $keywords;
-    }
-
-    /*URL*/
-    public function url($self)
-    {
-
-        //var_dump($self);
-
-        $param = http_build_query($self);
-        //d($param);
-
-        return $this->getUrl() . "/search?" . $param;
-    }
-
-    /*SOQI FORMAT*/
-    public function format($html)
-    {
-
-        $data = array();
-        $text = "";
-
-        foreach ($html->find(".itemblocks") as $item) {
-
-            $company = new SoqiImpl();
-            $company->setTitle($item);
-
-            if (count($item->find("p")) >= 4) {
-
-                list($desc, $contact, $address, $law) = $item->find("p");
-
-                $company->setDesc($desc);
-                $company->setAddress($address);
-
-                /*CONTACT*/
-                $col = ['setContactperson','setTel','setMobile','setFax'];
-                $contact = explode("&nbsp", $contact->plaintext);
-                
-                foreach ($contact as $key => $value) {
-
-                    $item = explode(":", $value);
-                    
-                    if (count($item)>1) {
-                        
-                        list(, $value) = $item;
-                    }
-                    // add value
-                    $company->{$col[$key]}(trim($value));
-                }
-
-                /*LAW*/
-                $law = explode("&nbsp;", $law->plaintext);
-                $law = array_filter($law); //remove empty element
-
-                //d($law);
-                $col = ['setMoney','setLawperson'];
-                $count = 0;
-                //var_dump($law);
-                foreach ($law as $key => $value) {
-
-                    list(,$value) = explode("：", $value);
-                    
-                    /*if (count($item)>1) {
-
-                       list(, $value) = $item;
-                       $law[$key] = trim($value);
-                    }*/
-                    // add value
-
-                    $company->{$col[$count]}(trim($value));
-                    $count++;
-                }
-
-
-                /*EXPORT DATA*/
-                // convert from object to array
-                $data[] = $company->jsonSerialize();
-
-            }
-
-            //var_dump();
-        }
-
-        return $data;
     }
 
     /**

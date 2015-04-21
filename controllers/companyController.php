@@ -62,12 +62,15 @@ class CompanyController extends Controller
             
             $keywords = Yii::$app->request->get()["keywords"];
             $page =  Yii::$app->request->get()["page"];
+            $city =  Yii::$app->request->get()["city"];
         }
         else {
 
             // $keyword = ($keyword == null) ? "互联网":$keyword;
             $keywords =  "互联网";
-            $page = 1;                
+            $page = 1;
+            $city = 100000;
+            $cityName = "全国";
         }
 
         
@@ -75,10 +78,14 @@ class CompanyController extends Controller
         $param = [
             "keywords" => $keywords,
             "page" => $page,
+            "city" => $city,
+            "cityName" => $cityName,
             "r" => Yii::$app->request->get()["r"]
         ];
 
         /*SEARCH*/
+
+        //d($param);
         $data = $model->finding($source, $param);
 
        // d($data);
