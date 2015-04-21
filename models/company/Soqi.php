@@ -175,21 +175,31 @@ class Soqi extends Source
                 $company->setAddress($address);
 
                 /*CONTACT*/
+                $col = ['setContactperson','setTel','setMobile','setFax'];
                 $contact = explode("&nbsp", $contact->plaintext);
+                
                 foreach ($contact as $key => $value) {
 
-                    list(, $value) = explode(":", $value);
-                    $contact[$key] = trim($value);
+                    $item = explode(":", $value);
+                    
+                    if (count($item)>1) {
+                        
+                        list(, $value) = $item;
+                        $contact[$key] = trim($value);
+                    }
+                    // add value
+                    $company->{$col[$key]}($contact[$key]);
                 }
-
-                list($contactperson, $tel, $mobile, $fax) = $contact;
-                //echo $contactperson;
-
-                $company->setContactperson($contactperson);
-                $company->setTel($tel);
-                $company->setMobile($mobile);
-                $company->setFax($fax);
-
+// 
+                
+                //var_dump($contact);
+                /*list contact*/
+                
+                foreach ($contact as $key => $contact_value) {
+                    # code...
+                
+                }
+  
                 /*LAW*/
                 $law = explode("&nbsp;", $law->plaintext);
 
@@ -198,10 +208,16 @@ class Soqi extends Source
 
                 foreach ($law as $key => $value) {
 
-                    list(, $value) = explode("：", $value);
+                    $item = explode(":", $value);
+                    
+                    if (count($item)>1) {
+
+                       list(, $value) = $item;
+                       $law[$key] = trim($value);
+                    }
 
                     //d($value);
-                    $law[$key] = trim($value);
+                    
                 }
                 //  d($law);
                 list($money, , , $lawperson) = $law;
@@ -210,16 +226,16 @@ class Soqi extends Source
                 $company->setLawperson($lawperson);
 
                 /*EXPORT DATA*/
-
+                // convert from object to array
                 $data[] = $company->jsonSerialize();
-                $text .= $item;
+                //var_dump($item);
+                //$text .= $item;
 
             }
 
             //var_dump();
         }
 
-        //   echo $text;
         return $data;
     }
 

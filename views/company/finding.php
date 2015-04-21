@@ -1,25 +1,26 @@
 <?php
 //header('Content-Type: application/json');
-
+//exit();
 use yii\helpers\Html;
 
 $col = array_keys($data[0]);
 $nodisplay = ["url"];
 
-
+//var_dump($param);
+//exit();
 $current = $param["page"];
 
 
 //json_encode
 //d($col);
-d($param);
+//d($param);
 ?>
 
 <!--INPUT-->
 <form class="form-inline" method="get" action="">
     <div class="form-group">
         <label for="keyword">Name</label>
-        <input type="text" class="form-control" id="keyword" placeholder="<?=$param["keyword"]?>" name="keyword">
+        <input type="text" class="form-control" id="keyword" placeholder="<?=$param["keywords"]?>" name="keyword">
     </div>
 
     <?php
@@ -78,5 +79,5 @@ d($param);
 
 <!--PAGING-->
 <?php
-require ("plugin/paging.php");
+//require ("plugin/paging.php");
 

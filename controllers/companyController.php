@@ -56,17 +56,26 @@ class CompanyController extends Controller
     public function actionFinding()
     {
 
-        $model = new Service();
+       $model = new Service();
 
-       $keyword = Yii::$app->request->get()["keyword"];
-       $page =  Yii::$app->request->get()["page"];
+       if (isset(Yii::$app->request->get()["keyword"])) {
+            
+            $keyword = Yii::$app->request->get()["keyword"];
+            $page =  Yii::$app->request->get()["page"];
+        }
+        else {
 
-        $keyword = ($keyword == null) ? "互联网":$keyword;
+            // $keyword = ($keyword == null) ? "互联网":$keyword;
+            $keyword =  "互联网";
+            $page = 1;                
+        }
 
+        
         $source = "soqi";
         $param = [
             "keywords" => $keyword,
-            "page" => $page
+            "page" => $page,
+            "r" => Yii::$app->request->get()["r"]
         ];
 
         /*SEARCH*/
@@ -76,7 +85,7 @@ class CompanyController extends Controller
 
         return $this->render('finding', [
             'data' => ($data),
-            'param'=>  Yii::$app->request->get()
+            'param'=>  $param
         ]);
     }
 }
