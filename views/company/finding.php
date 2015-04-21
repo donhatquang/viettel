@@ -8,8 +8,9 @@ $nodisplay = ["url"];
 
 //var_dump($param);
 //exit();
-$current = $param["page"];
 
+$current = $param["page"];
+var_dump($current);
 
 //json_encode
 //d($col);
@@ -79,5 +80,5 @@ $current = $param["page"];
 
 <!--PAGING-->
 <?php
-//require ("plugin/paging.php");
+require ("plugin/paging.php");
 

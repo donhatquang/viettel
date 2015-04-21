@@ -58,22 +58,22 @@ class CompanyController extends Controller
 
        $model = new Service();
 
-       if (isset(Yii::$app->request->get()["keyword"])) {
+       if (isset(Yii::$app->request->get()["keywords"])) {
             
-            $keyword = Yii::$app->request->get()["keyword"];
+            $keywords = Yii::$app->request->get()["keywords"];
             $page =  Yii::$app->request->get()["page"];
         }
         else {
 
             // $keyword = ($keyword == null) ? "互联网":$keyword;
-            $keyword =  "互联网";
+            $keywords =  "互联网";
             $page = 1;                
         }
 
         
         $source = "soqi";
         $param = [
-            "keywords" => $keyword,
+            "keywords" => $keywords,
             "page" => $page,
             "r" => Yii::$app->request->get()["r"]
         ];

@@ -34,6 +34,8 @@ use yii\helpers\Html;
 //            $url = Url::to('company/finding',$param);
 
             $param["page"] = $i;
+            $param[0] = null;
+            
             $url = Url::to($param);
 
             if ($current == $i) {
