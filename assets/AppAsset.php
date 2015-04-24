@@ -21,6 +21,13 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
+        'js/soqi/city.js',
+        'js/soqi/soqi.js',
+        'js/BaiduMap.js',
+
+        /*PLUGIN*/
+        'js/plugin/typeahead/bootstrap3-typeahead.js',
+        'js/plugin/jquery.fullscreen/jquery.fullscreen-min.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

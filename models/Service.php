@@ -72,9 +72,6 @@ class Service extends Model
         // get DOM from URL or file
          $data = null;
          $company = null;
-        //$object = json_decode(json_encode($this->source), FALSE);
-
-        //var_dump($object);
 
         /*CHECK IF EXIST*/
         if ($source && is_array($this->source[$source])) {
@@ -86,12 +83,14 @@ class Service extends Model
 
                 case "soqi":
                     $company = new Soqi();
-                    $company->setUrl($url);
+
+                    /*PARAM*/
                     $company->setCity($param["city"]);
                     $company->setCityName($param['cityName']);
+                    $company->setSearchType($param["search_type"]);
 
-                    /*KEYWORD*/
-                    //d($param);
+                    /*BASIC*/
+                    $company->setUrl($url);
                     $company->setKeywords($param["keywords"]);
                     $company->setPage($param["page"]);
 
@@ -100,9 +99,6 @@ class Service extends Model
                 default:
                     return;
             }
-
-
-            //d($company);
 
             $url = $company->url($company);
             $html = file_get_html($url);
@@ -116,11 +112,24 @@ class Service extends Model
             $data = $company->format($html);
         }
 
-        // d($data);
-        // echo json_encode($data);
+        return $data;
+    }
 
-        //   d($source);
-        //  dd($kwd);
+    /*DETAIL INFO*/
+    /**
+     * @param bool $source
+     * @param array $param
+     */
+    public function detall($source = false, $param = array()) {
+
+        $company = new Soqi();
+
+
+        $url = $param["url"];
+        $html = file_get_html($url);
+
+        $data = $company->formatDetail($html);
+
 
         return $data;
     }

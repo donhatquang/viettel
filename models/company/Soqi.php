@@ -7,8 +7,9 @@
  */
 
 namespace app\models;
+
 include("Source.php");
-include("SoqiCity.php");
+include("SoqiDetail.php");
 
 class Soqi extends Source
 {
@@ -50,7 +51,15 @@ class Soqi extends Source
     public function format($html)
     {
 
-        $data = null;
+        $data = [];
+
+        /*CHECK IF NULL*/
+        if (count($html->find(".itemblocks")) == 0) {
+
+            $company = new SoqiImpl();
+            $data[] = $company->jsonSerialize();
+            return $data;
+        }
 
         /*City list*/
         //d(count($html->find(".address_l")));
@@ -95,17 +104,10 @@ class Soqi extends Source
 
                 $col = ['setMoney','setLawperson'];
                 $count = 0;
-                //var_dump($law);
+
                 foreach ($law as $key => $value) {
 
                     list(,$value) = explode("：", $value);
-                    
-                    /*if (count($item)>1) {
-
-                       list(, $value) = $item;
-                       $law[$key] = trim($value);
-                    }*/
-                    // add value
 
                     $company->{$col[$count]}(trim($value));
                     $count++;
@@ -119,13 +121,16 @@ class Soqi extends Source
             }
         }
         //END LIST
+          return $companylist;
+    }
 
-        /*EXPORT DATA*/
-        $data = array(
+    public function formatDetail($html) {
 
-            "company" => $companylist,
-            "city" => $city
-        );
+        /*IMPLEMENT SOQI WEB*/
+        $company = new SoqiDetail();
+        $company->setMap($html);
+
+        $data = $company->jsonSerialize();
 
         return $data;
     }

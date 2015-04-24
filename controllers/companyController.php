@@ -53,16 +53,82 @@ class CompanyController extends Controller
         return $this->render('index');
     }
 
+    public function actionDetail() {
+
+        //$this->layout = false;
+        $model = new Service();
+
+
+        if (isset(Yii::$app->request->get()["keywords"])) {
+
+            $url = Yii::$app->request->get()["url"];
+        }
+        else {
+
+            $url = "http://www.soqi.cn/detail/id_22819C328KJU.html";
+        }
+
+        /*------------*/
+        $source = "soqi";
+        $param = [
+            "url" => $url
+        ];
+
+        $data = $model->detall($source, $param);
+
+        return $this->render('detail', [
+            'data' => ($data),
+            'param'=>  $param
+        ]);
+    }
+
+    /*MAP*/
+    public function actionMap() {
+
+        //$this->layout = false;
+        $model = new Service();
+
+        if (isset(Yii::$app->request->get()["keywords"])) {
+
+            $url = Yii::$app->request->get()["url"];
+        }
+        else {
+
+            $url = "http://www.soqi.cn/detail/id_22819C328KJU.html";
+        }
+
+        /*------------*/
+        $source = "soqi";
+        $param = [
+            "url" => $url
+        ];
+
+        $data = $model->detall($source, $param);
+
+        return $this->render('map', [
+            'data' => ($data),
+            'param'=>  $param
+        ]);
+    }
+
+    /*FINDING*/
     public function actionFinding()
     {
 
        $model = new Service();
+
+        //$baseUrl = Yii::$app->basePath;
+        //Yii::$app->assetManager->publish(        ]);
+
+        //var_dump($cs);
 
        if (isset(Yii::$app->request->get()["keywords"])) {
             
             $keywords = Yii::$app->request->get()["keywords"];
             $page =  Yii::$app->request->get()["page"];
             $city =  Yii::$app->request->get()["city"];
+            $cityName =  Yii::$app->request->get()["cityName"];
+            $search_type = Yii::$app->request->get()["search_type"];
         }
         else {
 
@@ -71,16 +137,17 @@ class CompanyController extends Controller
             $page = 1;
             $city = 100000;
             $cityName = "全国";
+            $search_type = 3;
         }
 
-        
         $source = "soqi";
         $param = [
             "keywords" => $keywords,
             "page" => $page,
             "city" => $city,
             "cityName" => $cityName,
-            "r" => Yii::$app->request->get()["r"]
+            "r" => Yii::$app->request->get()["r"],
+            "search_type" => $search_type
         ];
 
         /*SEARCH*/
