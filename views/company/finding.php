@@ -2,28 +2,21 @@
 //header('Content-Type: application/json');
 
 use yii\helpers\Html;
-use kartik\typeahead\TypeaheadBasic;
-use kartik\typeahead\Typeahead;
 
 
 /* @var $this yii\web\View */
 /*$this->title = 'About';
 $this->params['breadcrumbs'][] = $this->title;*/
 
+/*MAIN DATABASE DATA*/
+$data = $data["company"];
+
 $col = array_keys($data[0]);
 $nodisplay = ["url"];
 
 $current = $param["page"];
+d($param);
 
-// Usage without a model (with search term highlighting)
-//echo '<label class="control-label">State</label>';
-/*echo TypeaheadBasic::widget([
-    'name' => 'state_10',
-    'data' => ['']
-    //'data' =>  ['do nhat quang','linh mashi'],
-    //'options' => ['placeholder' => 'Filter as you type ...'],
-    //'pluginOptions' => ['highlight'=>true],
-]);*/
 ?>
 
     <nav class="navbar navbar-default">
@@ -65,6 +58,19 @@ $current = $param["page"];
                        aria-controls="collapseExample">
                         Filter
                     </a>
+
+                    <div id="google_translate_element"></div>
+                    <script type="text/javascript">
+                        function googleTranslateElementInit() {
+                            new google.translate.TranslateElement({
+                                pageLanguage: 'zh-TW',
+                                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                            }, 'google_translate_element');
+                        }
+                    </script>
+                    <script type="text/javascript"
+                            src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
                 </form>
 
 
@@ -112,7 +118,7 @@ $current = $param["page"];
             $tr = Html::tag("th", $id + 1, ["scope" => "row"]);
 
             foreach ($item as $key => $value) {
-              //  if (!in_array($key, $nodisplay))
+                //  if (!in_array($key, $nodisplay))
 
                 if ($key == "url") {
 
@@ -120,8 +126,8 @@ $current = $param["page"];
 
                         "type" => "button",
                         "class" => "btn btn-primary company-btn",
-                       // "data-toggle" => "modal",
-                       // "data-target" => "#myModal",
+                        // "data-toggle" => "modal",
+                        // "data-target" => "#myModal",
                         "data-url" => $value
 
                     ]);
@@ -150,7 +156,8 @@ $current = $param["page"];
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                 </div>
                 <div class="modal-body">
@@ -164,7 +171,21 @@ $current = $param["page"];
         </div>
     </div>
 
+
     <!--PAGING-->
+
+
 <?php
+
+// Usage without a model (with search term highlighting)
+//echo '<label class="control-label">State</label>';
+/*echo TypeaheadBasic::widget([
+    'name' => 'state_10',
+    'data' => ['']
+    //'data' =>  ['do nhat quang','linh mashi'],
+    //'options' => ['placeholder' => 'Filter as you type ...'],
+    //'pluginOptions' => ['highlight'=>true],
+]);*/
+
 require("plugin/paging.php");
 

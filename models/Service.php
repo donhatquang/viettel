@@ -2,8 +2,11 @@
 
 namespace app\models;
 
+
+use linslin\yii2\curl;
 use Yii;
 use yii\base\Model;
+
 //use yii\base\Object;
 
 // example of how to use viettel selector to retrieve HTML contents
@@ -12,6 +15,7 @@ include('simplehtmldom_1_5/simple_html_dom.php');
 /*SOQI*/
 include('company/Soqi.php');
 include('company/SoqiImpl.php');
+include('API/Google.php');
 
 /**
  * ContactForm is the model behind the contact form.
@@ -70,8 +74,8 @@ class Service extends Model
         //var_dump($source);
 
         // get DOM from URL or file
-         $data = null;
-         $company = null;
+        $data = null;
+        $company = null;
 
         /*CHECK IF EXIST*/
         if ($source && is_array($this->source[$source])) {
@@ -82,6 +86,14 @@ class Service extends Model
             switch ($source) {
 
                 case "soqi":
+
+                    /*TRANSLATE KEYWORD*/
+                    $curl = new curl\Curl();
+                    $google = new Google($curl);
+
+                    $keyword = $google->translate($param["keywords"]);
+
+                    /*------------------*/
                     $company = new Soqi();
 
                     /*PARAM*/
@@ -91,36 +103,44 @@ class Service extends Model
 
                     /*BASIC*/
                     $company->setUrl($url);
-                    $company->setKeywords($param["keywords"]);
+                    $company->setKeywords($keyword->getResult(0));
                     $company->setPage($param["page"]);
+
+
 
                     break;
 
                 default:
                     return;
-            }
+            };
+
+
+            //var_dump($data);
+            //exit();
 
             $url = $company->url($company);
             $html = file_get_html($url);
 
-            /*
-             *  $data = array(
-            "company" => $companylist,
-            "city" => $city
-             * */
+            d($keyword->getResponse());
+            echo $company->getKeywords();
 
-            $data = $company->format($html);
+            $data = array(
+                "company" => $company->format($html),
+                "keyword" => $keyword->getResponse()
+            );
         }
-
         return $data;
     }
+
 
     /*DETAIL INFO*/
     /**
      * @param bool $source
      * @param array $param
      */
-    public function detall($source = false, $param = array()) {
+    public
+    function detall($source = false, $param = array())
+    {
 
         $company = new Soqi();
 

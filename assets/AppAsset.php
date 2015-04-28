@@ -24,6 +24,7 @@ class AppAsset extends AssetBundle
         'js/soqi/city.js',
         'js/soqi/soqi.js',
         'js/BaiduMap.js',
+        'js/main.js',
 
         /*PLUGIN*/
         'js/plugin/typeahead/bootstrap3-typeahead.js',
