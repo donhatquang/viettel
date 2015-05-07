@@ -11,7 +11,8 @@ var currentCity = {
 
     init: function () {
 
-        /**/$("#city-target span").text(this.name);
+        /**/
+        $("#city-target span").text(this.name);
 
         /*form input*/
         $("#input-city").val(this.id);
@@ -28,7 +29,7 @@ var currentCity = {
 
 }
 
-var effect = function() {
+var effect = function () {
 
     var location = province.concat(city).concat(area);
 
@@ -48,41 +49,76 @@ var effect = function() {
     });
 
 
-
     /*COMPANY BTN*/
-    $(".company-btn").click(function() {
+    $(".company-btn").click(function () {
 
         window.location = "?r=company/detail";
     });
 
     /*SEARCH TYPE*/
-    $("input[name=searchtype]").change(function() {
+    $("input[name=searchtype]").change(function () {
 
         $("#input-search_type").val($(this).val());
 
         console.log($(this).val());
     })
 
+    /*HIDDEN*/
+    setInterval(function () {
+
+        var iframe = $('.goog-te-banner-frame:first').contents();
+        iframe.find(".goog-logo-link").css("display", "none");
+
+        //console.log(iframe.find(".goog-logo-link").css("display"));
+
+    }, 100);
+
     return;
-}/**
+}
+
+var timer = 0;
+
+var autoTranslate = function () {
+
+
+    if ($("#goog-gt-tt").length != 0) {
+
+        var Langname = lang.name.split(" ")[0];
+        var condition = ".goog-te-menu2-item:contains('" + Langname + "')";
+
+        var item = $("#goog-gt-tt").next("iframe").contents().find(condition);
+
+        clearInterval(timer);
+
+        try {
+            item[0].click();
+        }
+        catch (e) {
+            console.log(e);
+        }
+
+        //console.log(item);
+
+        return true;
+    }
+
+    else
+        return false;
+};
+
+/**
  * Created by nhatquang on 4/28/2015.
  */
 
 
-$(function() {
+$(function () {
 
     Soqi.province();
 
     effect();
 
-    /*HIDDEN*/
-    setInterval(function() {
+    /*AUTO TRANSLATE*/
+    timer = setInterval(autoTranslate, 500);
 
-        var iframe = $('.goog-te-banner-frame:first').contents();
-        iframe.find(".goog-logo-link").css("display","none");
-
-        //console.log(iframe.find(".goog-logo-link").css("display"));
-
-    },100);
 
 })

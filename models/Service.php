@@ -17,6 +17,7 @@ include('company/Soqi.php');
 include('company/SoqiImpl.php');
 include('API/Google.php');
 
+
 /**
  * ContactForm is the model behind the contact form.
  */
@@ -91,7 +92,13 @@ class Service extends Model
                     $curl = new curl\Curl();
                     $google = new Google($curl);
 
-                    $keyword = $google->translate($param["keywords"]);
+                    $translate = $google->translate($param["keywords"])->getResponse();
+                    $keyword = $translate[0][0][0];
+                    //d($translate);
+                    $lang = $translate["lang"];
+ //                   d($translate);
+
+
 
                     /*------------------*/
                     $company = new Soqi();
@@ -103,10 +110,8 @@ class Service extends Model
 
                     /*BASIC*/
                     $company->setUrl($url);
-                    $company->setKeywords($keyword->getResult(0));
+                    $company->setKeywords($keyword);
                     $company->setPage($param["page"]);
-
-
 
                     break;
 
@@ -121,14 +126,15 @@ class Service extends Model
             $url = $company->url($company);
             $html = file_get_html($url);
 
-            d($keyword->getResponse());
-            echo $company->getKeywords();
+            //d($keyword->getResponse());
+            //echo $company->getKeywords();
 
             $data = array(
                 "company" => $company->format($html),
-                "keyword" => $keyword->getResponse()
+                "lang" => $lang
             );
         }
+
         return $data;
     }
 
@@ -150,8 +156,6 @@ class Service extends Model
 
         $data = $company->formatDetail($html);
 
-
-        return $data;
     }
 
 }

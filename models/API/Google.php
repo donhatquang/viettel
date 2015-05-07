@@ -7,7 +7,9 @@
  */
 
 namespace app\models;
+
 include("Langcode.php");
+
 
 class Google
 {
@@ -63,11 +65,19 @@ class Google
     {
         $this->response = $response;
     }
+
     private $curl = null;
 
     function __construct($curl)
+
     {
+        /*CURL OBJECT*/
         $this->curl = $curl;
+
+        /*LANG CODE*/
+        $Language = new Language();
+        $this->Langcode = $Language->getLangcode();
+
     }
 
 
@@ -77,7 +87,7 @@ class Google
     public function translate($q, $param = false)
     {
 
-        $defaultParma = [
+        $defaultParam = [
 
             "client" => "t",
             "sl" => "auto",
@@ -89,7 +99,7 @@ class Google
         ];
         if ($param == false) {
 
-            $param = $defaultParma;
+            $param = $defaultParam;
         }
 
         $param = http_build_query($param);
@@ -117,16 +127,34 @@ class Google
         //var_dump($response->response);
         $this->response = $json;
 
+        /*ADD LANGNAME*/
+        $this->addLangname();
+
         return $this;
     }
 
-    function getResult($pos = 0)
+
+
+    function addLangname()
     {
         //d($this->response);
         /*LIST COUNTRY*/
-        d($Langcode);
+        //d($this->Langcode);
 
-        return $this->response[0][$pos][0];
+        $response = $this->response;
+
+        $langcode = $response[1];
+        $langname = array_search($langcode, $this->Langcode);
+
+        //d($langname);
+        $response["lang"] = [
+            "name" => $langname,
+            "code" => $langcode
+        ];
+
+        $this->response = $response;
+
+        return $response;
     }
 
 }
