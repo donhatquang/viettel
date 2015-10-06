@@ -23,6 +23,7 @@ $nodisplay = ["url"];
 ?>
 <script language="javascript">
 
+    hello 
 </script>
 
     <nav class="navbar navbar-default">
@@ -66,7 +67,7 @@ $nodisplay = ["url"];
                     </a>
 
                     <?php
-                    require("plugin/translate.php");
+                 //   require("plugin/translate.php");
                     ?>
 
                 </form>
