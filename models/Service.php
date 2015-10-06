@@ -90,12 +90,14 @@ class Service extends Model
 
                     /*TRANSLATE KEYWORD*/
                     $curl = new curl\Curl();
-                    $google = new Google($curl);
+                    //$google = new Google($curl);
 
-                    $translate = $google->translate($param["keywords"])->getResponse();
-                    $keyword = $translate[0][0][0];
+                    //$translate = $google->translate($param["keywords"])->getResponse();
+                    //$keyword = $translate[0][0][0];
+                    $keyword = $param["keywords"];
+
                     //d($translate);
-                    $lang = $translate["lang"];
+                    //$lang = $translate["lang"];
  //                   d($translate);
 
 
@@ -125,16 +127,17 @@ class Service extends Model
 
             $url = $company->url($company);
             $html = file_get_html($url);
+            //exit();
 
             //d($keyword->getResponse());
             //echo $company->getKeywords();
 
             $data = array(
-                "company" => $company->format($html),
-                "lang" => $lang
+                "company" => $company->format($html)
+                //"lang" => $lang
             );
         }
-
+        var_dump($data);
         return $data;
     }
 

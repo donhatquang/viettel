@@ -9,7 +9,7 @@ use yii\helpers\Html;
 $this->params['breadcrumbs'][] = $this->title;*/
 
 /*MAIN DATABASE DATA*/
-$lang = ($data["lang"]);
+//$lang = ($data["lang"]);
 $data = $data["company"];
 //d($lang);
 
@@ -17,14 +17,18 @@ $data = $data["company"];
 $current = $param["page"];
 
 /*INIT*/
-$col = array_keys($data[0]);
+$col = 0;
+if (count($data) != 0)
+    $col = array_keys($data[0]);
+
 $nodisplay = ["url"];
 
 ?>
 <script language="javascript">
 
-    hello 
 </script>
+
+do nhat quang
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -99,10 +103,11 @@ $nodisplay = ["url"];
             <th>#</th>
 
             <?php
+            if ($col != 0) {
             foreach ($col as $item) {
                 if (!in_array($item, $nodisplay))
                     echo Html::tag("th", strtoupper($item));
-            }
+            }}
             ?>
 
         </thead>
@@ -111,6 +116,7 @@ $nodisplay = ["url"];
         <?php
 
         /*FETCH DATA*/
+        if ($col != 0)
         foreach ($data as $id => $item) {
 
             /*FIRST COLUMN*/

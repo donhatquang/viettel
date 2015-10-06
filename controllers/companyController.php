@@ -155,6 +155,9 @@ class CompanyController extends Controller
         //d($param);
         $data = $model->finding($source, $param);
 
+        //var_dump($data);
+        //return;
+
        // d($data);
 
         return $this->render('finding', [
