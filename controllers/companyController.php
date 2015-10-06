@@ -137,7 +137,7 @@ class CompanyController extends Controller
             $page = 1;
             $city = 100000;
             $cityName = "全国";
-            $search_type = 3;
+            $search_type = 1;
         }
 
         $source = "soqi";

@@ -61,6 +61,8 @@ class Soqi extends Source
             return $data;
         }
 
+        //echo count($html->find(".itemblocks"));
+
         /*City list*/
         //d(count($html->find(".address_l")));
         $address = $html->find(".address_l")[0];
@@ -71,19 +73,28 @@ class Soqi extends Source
 
         foreach ($html->find(".itemblocks") as $item) {
 
+            //echo $item;
+
             /*IMPLEMENT SOQI WEB*/
             $company = new SoqiImpl();
+
+
+
             $company->setTitle($item);
+            //echo count($item->find("p"));
 
-            if (count($item->find("p")) >= 4) {
+            if (count($item->find("p")) >= 3) {
 
-                list($desc, $contact, $address, $law) = $item->find("p");
+                //list($desc, $contact, $address, $law) = $item->find("p");
+
+                list($desc, $address, $law) = $item->find("p");
+
 
                 $company->setDesc($desc);
                 $company->setAddress($address);
 
                 /*CONTACT*/
-                $col = ['setContactperson','setTel','setMobile','setFax'];
+                /*$col = ['setContactperson','setTel','setMobile','setFax'];
                 $contact = explode("&nbsp", $contact->plaintext);
                 
                 foreach ($contact as $key => $value) {
@@ -95,7 +106,7 @@ class Soqi extends Source
                     }
                     // add value
                     $company->{$col[$key]}(trim($value));
-                }
+                }*/
 
                 /*LAW*/
                 $law = explode("&nbsp;", $law->plaintext);
@@ -113,15 +124,21 @@ class Soqi extends Source
                     $count++;
                 }
 
+
+                //var_dump($company);
                 // convert from object to array
                 $companylist[] = $company->jsonSerialize();
 
                 /*ADD COMPANY OBJECT TO LIST*/
                 //$companylist[] = $company;
+
+                //var_dump($company);
             }
         }
         //END LIST
-          return $companylist;
+        //var_dump($companylist);
+        //exit();
+        return $companylist;
     }
 
     public function formatDetail($html) {

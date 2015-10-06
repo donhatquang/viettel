@@ -125,7 +125,7 @@ class Service extends Model
             //var_dump($data);
             //exit();
 
-            $url = $company->url($company);
+            echo $url = $company->url($company);
             $html = file_get_html($url);
             //exit();
 
@@ -137,7 +137,7 @@ class Service extends Model
                 //"lang" => $lang
             );
         }
-        var_dump($data);
+        //var_dump($data);
         return $data;
     }
 

@@ -28,8 +28,6 @@ $nodisplay = ["url"];
 
 </script>
 
-do nhat quang
-
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
