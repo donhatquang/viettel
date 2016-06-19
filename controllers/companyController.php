@@ -143,7 +143,7 @@ class CompanyController extends Controller
             $page = 1;
             $city = 100000;
             $cityName = "全国";
-            $search_type = 3;
+            $search_type = 1;
         }
 
         $source = "soqi";
@@ -168,8 +168,15 @@ class CompanyController extends Controller
 
         //d($param);
         $data = $model->finding($source, $param);
+<<<<<<< HEAD
 		//var_dump($data);
 		//exit();
+=======
+
+        //var_dump($data);
+        //return;
+
+>>>>>>> origin/master
        // d($data);
 
         return $this->render('finding', [

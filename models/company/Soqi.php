@@ -62,6 +62,8 @@ class Soqi extends Source
             return $data;
         }
 
+        //echo count($html->find(".itemblocks"));
+
         /*City list*/
         //d(count($html->find(".address_l")));
         $address = $html->find(".address_l")[0];
@@ -74,9 +76,15 @@ class Soqi extends Source
 
         foreach ($html->find(".itemblocks") as $item) {
 
+            //echo $item;
+
             /*IMPLEMENT SOQI WEB*/
             $company = new SoqiImpl();
+
+
+
             $company->setTitle($item);
+<<<<<<< HEAD
 			//echo $item;
 			//echo "count p: ".var_dump(count($item->find("p")));
 			
@@ -85,6 +93,16 @@ class Soqi extends Source
 
                 //list($desc, $contact, $address, $law) = $item->find("p");
 				list($desc, $address, $law) = $item->find("p");
+=======
+            //echo count($item->find("p"));
+
+            if (count($item->find("p")) >= 3) {
+
+                //list($desc, $contact, $address, $law) = $item->find("p");
+
+                list($desc, $address, $law) = $item->find("p");
+
+>>>>>>> origin/master
 
                 $company->setDesc($desc);
                 $company->setAddress($address);
@@ -119,17 +137,27 @@ class Soqi extends Source
                     $company->{$col[$count]}(trim($value));
                     $count++;
                 }
+<<<<<<< HEAD
 				
 				//var_dump($company);
+=======
+
+
+                //var_dump($company);
+>>>>>>> origin/master
                 // convert from object to array
                 $companylist[] = $company->jsonSerialize();
 
                 /*ADD COMPANY OBJECT TO LIST*/
                 //$companylist[] = $company;
+
+                //var_dump($company);
             }
         }
         //END LIST
-          return $companylist;
+        //var_dump($companylist);
+        //exit();
+        return $companylist;
     }
 
     public function formatDetail($html) {

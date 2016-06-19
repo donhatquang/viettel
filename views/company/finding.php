@@ -9,7 +9,7 @@ use yii\helpers\Html;
 $this->params['breadcrumbs'][] = $this->title;*/
 
 /*MAIN DATABASE DATA*/
-$lang = ($data["lang"]);
+//$lang = ($data["lang"]);
 $data = $data["company"];
 //d($lang);
 
@@ -17,8 +17,15 @@ $data = $data["company"];
 $current = $param["page"];
 
 /*INIT*/
+<<<<<<< HEAD
 
 $col = array_keys($data[0]);
+=======
+$col = 0;
+if (count($data) != 0)
+    $col = array_keys($data[0]);
+
+>>>>>>> origin/master
 $nodisplay = ["url"];
 
 //var_dump($col);
@@ -77,7 +84,7 @@ $nodisplay = ["url"];
                     </a>
 
                     <?php
-                    require("plugin/translate.php");
+                 //   require("plugin/translate.php");
                     ?>
 
                     <div style="margin: 10px;" class="flags">
@@ -116,10 +123,11 @@ $nodisplay = ["url"];
             <th>#</th>
 
             <?php
+            if ($col != 0) {
             foreach ($col as $item) {
                 if (!in_array($item, $nodisplay))
                     echo Html::tag("th", strtoupper($item));
-            }
+            }}
             ?>
 
         </thead>
@@ -130,6 +138,7 @@ $nodisplay = ["url"];
         //var_dump($data);
 
         /*FETCH DATA*/
+        if ($col != 0)
         foreach ($data as $id => $item) {
 
             /*FIRST COLUMN*/

@@ -105,14 +105,25 @@ class Service extends Model
                 case "soqi":
 
                     /*TRANSLATE KEYWORD*/
+<<<<<<< HEAD
                     /*$curl = new curl\Curl();
                     $google = new Google($curl);
+=======
+                    $curl = new curl\Curl();
+                    //$google = new Google($curl);
 
-                    $translate = $google->translate($param["keywords"])->getResponse();
-                    $keyword = $translate[0][0][0];
+                    //$translate = $google->translate($param["keywords"])->getResponse();
+                    //$keyword = $translate[0][0][0];
+                    $keyword = $param["keywords"];
+>>>>>>> origin/master
+
                     //d($translate);
+<<<<<<< HEAD
 
                     $lang = $translate["lang"];
+=======
+                    //$lang = $translate["lang"];
+>>>>>>> origin/master
  //                   d($translate);
 */
 
@@ -149,6 +160,7 @@ class Service extends Model
             //var_dump($data);
             //exit();
 
+<<<<<<< HEAD
             //var_dump($source);
 
             $url = $company->url($company);
@@ -160,16 +172,21 @@ class Service extends Model
 			
 			//var_dump($url);
 			//echo $html;
+=======
+            echo $url = $company->url($company);
+            $html = file_get_html($url);
+            //exit();
+>>>>>>> origin/master
 
             //d($keyword->getResponse());
             //echo $company->getKeywords();
 
             $data = array(
-                "company" => $company->format($html),
-                "lang" => $lang
+                "company" => $company->format($html)
+                //"lang" => $lang
             );
         }
-
+        //var_dump($data);
         return $data;
     }
 
