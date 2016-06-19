@@ -12,9 +12,17 @@ use yii\base\Model;
 // example of how to use viettel selector to retrieve HTML contents
 include('simplehtmldom_1_5/simple_html_dom.php');
 
+// source
+//include("company/Company.php");
+include("company/Source.php");
+
 /*SOQI*/
 include('company/Soqi.php');
 include('company/SoqiImpl.php');
+
+include('company/Cam.php');
+include('company/CamImpl.php');
+
 include('API/Google.php');
 
 
@@ -34,6 +42,14 @@ class Service extends Model
                 "search_type" => 3,
                 "city" => 100000,
                 "cityName" => ""
+            ]
+        ],
+
+        "cam" => [
+
+            "url" => "http://yp.com.kh",
+            "param" => [
+                "q" => "internet"                
             ]
         ]
     ];
@@ -89,15 +105,16 @@ class Service extends Model
                 case "soqi":
 
                     /*TRANSLATE KEYWORD*/
-                    $curl = new curl\Curl();
+                    /*$curl = new curl\Curl();
                     $google = new Google($curl);
 
                     $translate = $google->translate($param["keywords"])->getResponse();
                     $keyword = $translate[0][0][0];
                     //d($translate);
+
                     $lang = $translate["lang"];
  //                   d($translate);
-
+*/
 
 
                     /*------------------*/
@@ -110,10 +127,19 @@ class Service extends Model
 
                     /*BASIC*/
                     $company->setUrl($url);
-                    $company->setKeywords($keyword);
+                    $company->setKeywords($param["keywords"]);
                     $company->setPage($param["page"]);
 
                     break;
+
+                case "cam": 
+
+                    $company = new Cam();
+
+                    $company->setUrl($url);
+                    $company->setKeywords($param["q"]);
+
+                break;
 
                 default:
                     return;
@@ -123,8 +149,17 @@ class Service extends Model
             //var_dump($data);
             //exit();
 
+            //var_dump($source);
+
             $url = $company->url($company);
+
+            //var_dump($url);
+            
             $html = file_get_html($url);
+            
+			
+			//var_dump($url);
+			//echo $html;
 
             //d($keyword->getResponse());
             //echo $company->getKeywords();

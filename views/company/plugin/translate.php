@@ -11,7 +11,7 @@ $lang = json_encode($lang);
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
             pageLanguage: 'zh-TW',
-            includedLanguages: 'en,vi,zh-CN',
+            includedLanguages: 'en,vi,zh-CN,es,fr,km,lo',
             layout: google.translate.TranslateElement.InlineLayout.SIMPLE
         }, 'google_translate_element');
     }

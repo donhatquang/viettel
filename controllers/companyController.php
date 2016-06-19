@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\Company;
 
+ini_set('user_agent','Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.63 Safari/537.36'); 
+
 class CompanyController extends Controller
 {
     //public  $layout = false;
@@ -68,10 +70,13 @@ class CompanyController extends Controller
             $url = "http://www.soqi.cn/detail/id_22819C328KJU.html";
         }
 
+        $title = Yii::$app->request->get()["title"];
+
         /*------------*/
         $source = "soqi";
         $param = [
-            "url" => $url
+            "url" => $url,
+            "title" => $title
         ];
 
         $data = $model->detall($source, $param);
@@ -129,6 +134,7 @@ class CompanyController extends Controller
             $city =  Yii::$app->request->get()["city"];
             $cityName =  Yii::$app->request->get()["cityName"];
             $search_type = Yii::$app->request->get()["search_type"];
+
         }
         else {
 
@@ -142,7 +148,7 @@ class CompanyController extends Controller
 
         $source = "soqi";
         $param = [
-            "keywords" => $keywords,
+            "q" => $keywords,
             "page" => $page,
             "city" => $city,
             "cityName" => $cityName,
@@ -150,11 +156,20 @@ class CompanyController extends Controller
             "search_type" => $search_type
         ];
 
+        if ($cityName == "cam") {
+
+            $source = "cam";
+            $param = [
+                "q" => $keywords
+            ];
+        }
+
         /*SEARCH*/
 
         //d($param);
         $data = $model->finding($source, $param);
-
+		//var_dump($data);
+		//exit();
        // d($data);
 
         return $this->render('finding', [

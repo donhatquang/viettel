@@ -128,8 +128,8 @@ var_dump($data);
 
             </a>
         </div>
-        <div class="media-body">
-            <h4 class="media-heading">Media heading</h4>
+        <div class="media-body" style="line-height: 2em;">
+            <h4 class="media-heading"><?php echo $param["title"]; ?></h4>
             <p>地址：北京市海淀区上地十街10号<br/>电话：(010)59928888<br/>简介：百度大厦位于北京市海淀区西二旗地铁站附近，为百度公司综合研发及办公总部</p>
 
         </div>

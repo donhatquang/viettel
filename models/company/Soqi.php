@@ -8,7 +8,7 @@
 
 namespace app\models;
 
-include("Source.php");
+
 include("SoqiDetail.php");
 
 class Soqi extends Source
@@ -25,8 +25,7 @@ class Soqi extends Source
     {
 
         $param = http_build_query($self);
-
-        return $this->getUrl() . "/search?" . $param;
+        return $this->getUrl() . "/search.xhtml?" . $param;
     }
 
     /*SOQI CITY SOLUTION*/
@@ -52,7 +51,9 @@ class Soqi extends Source
     {
 
         $data = [];
-
+		//echo "test";
+		//echo "count: ".var_dump(count($html->find(".itemblocks")));
+		
         /*CHECK IF NULL*/
         if (count($html->find(".itemblocks")) == 0) {
 
@@ -68,22 +69,28 @@ class Soqi extends Source
 
         /*Company list*/
         $companylist = [];
+		
+		
 
         foreach ($html->find(".itemblocks") as $item) {
 
             /*IMPLEMENT SOQI WEB*/
             $company = new SoqiImpl();
             $company->setTitle($item);
+			//echo $item;
+			//echo "count p: ".var_dump(count($item->find("p")));
+			
+            if (count($item->find("p")) >= 3) {
+			//if (count($item->find("p")) >= 4) {
 
-            if (count($item->find("p")) >= 4) {
-
-                list($desc, $contact, $address, $law) = $item->find("p");
+                //list($desc, $contact, $address, $law) = $item->find("p");
+				list($desc, $address, $law) = $item->find("p");
 
                 $company->setDesc($desc);
                 $company->setAddress($address);
 
                 /*CONTACT*/
-                $col = ['setContactperson','setTel','setMobile','setFax'];
+                /*$col = ['setContactperson','setTel','setMobile','setFax'];
                 $contact = explode("&nbsp", $contact->plaintext);
                 
                 foreach ($contact as $key => $value) {
@@ -95,7 +102,7 @@ class Soqi extends Source
                     }
                     // add value
                     $company->{$col[$key]}(trim($value));
-                }
+                }*/
 
                 /*LAW*/
                 $law = explode("&nbsp;", $law->plaintext);
@@ -112,7 +119,8 @@ class Soqi extends Source
                     $company->{$col[$count]}(trim($value));
                     $count++;
                 }
-
+				
+				//var_dump($company);
                 // convert from object to array
                 $companylist[] = $company->jsonSerialize();
 

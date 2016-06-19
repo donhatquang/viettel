@@ -49,6 +49,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+        echo "quang";
         return $this->render('index');
     }
 

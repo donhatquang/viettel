@@ -5,14 +5,16 @@ $this->title = 'My Yii Application';
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <!--<h1>Congratulations!</h1>-->
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <img src="images/Viettel_Logo.jpg" height="250"/>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p class="lead">Welcome to Viettel VIT2 company searching portal - a product for VTG</p>
+
+        <p><a class="btn btn-lg btn-success" href="?r=company/finding">Get started</a></p>
     </div>
 
-    <div class="body-content">
+    <div class="body-content" style="display: none;">
 
         <div class="row">
             <div class="col-lg-4">

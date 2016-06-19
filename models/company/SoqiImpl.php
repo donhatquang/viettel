@@ -8,7 +8,7 @@
 
 namespace app\models;
 
-include("Company.php");
+require_once("Company.php");
 class SoqiImpl extends Company
 {
 

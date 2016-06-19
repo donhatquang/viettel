@@ -52,7 +52,13 @@ var effect = function () {
     /*COMPANY BTN*/
     $(".company-btn").click(function () {
 
-        window.location = "?r=company/detail";
+        //window.location = "?r=company/detail";
+        //$(this).parents("tr").find("td:first")html());
+        var title = $(this).attr("data-title");
+        var url = $(this).attr("data-url");
+
+        window.location = "?r=company/detail&url="+url+"&title="+title;
+
     });
 
     /*SEARCH TYPE*/
@@ -81,7 +87,7 @@ var timer = 0;
 var autoTranslate = function () {
 
 
-    if ($("#goog-gt-tt").length != 0) {
+    /*if ($("#goog-gt-tt").length != 0) {
 
         var Langname = lang.name.split(" ")[0];
         var condition = ".goog-te-menu2-item:contains('" + Langname + "')";
@@ -103,7 +109,7 @@ var autoTranslate = function () {
     }
 
     else
-        return false;
+        return false;*/
 };
 
 /**

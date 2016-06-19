@@ -17,13 +17,23 @@ $data = $data["company"];
 $current = $param["page"];
 
 /*INIT*/
+
 $col = array_keys($data[0]);
 $nodisplay = ["url"];
+
+//var_dump($col);
 
 ?>
 <script language="javascript">
 
 </script>
+
+<style type="text/css">
+
+    .flags img {
+        margin: 5px;
+    }
+</style>
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -31,6 +41,7 @@ $nodisplay = ["url"];
 
                 <a class="navbar-brand" href="#">Search</a>
             </div>
+
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 
                 <!--INPUT-->
@@ -69,7 +80,14 @@ $nodisplay = ["url"];
                     require("plugin/translate.php");
                     ?>
 
+                    <div style="margin: 10px;" class="flags">
+                        <img src="images/Flag_of_Cambodia.png" height="50" />
+                        <img src="images/Flag_of_the_China.png" height="50" />
+                    </div>
+
                 </form>
+
+
 
 
             </div>
@@ -109,6 +127,8 @@ $nodisplay = ["url"];
 
         <?php
 
+        //var_dump($data);
+
         /*FETCH DATA*/
         foreach ($data as $id => $item) {
 
@@ -124,9 +144,11 @@ $nodisplay = ["url"];
 
                         "type" => "button",
                         "class" => "btn btn-primary company-btn",
+
                         // "data-toggle" => "modal",
                         // "data-target" => "#myModal",
-                        "data-url" => $value
+                        "data-url" => $value,
+                        "data-title" => $item["title"]
 
                     ]);
                     $tr .= Html::tag("td", $text);
